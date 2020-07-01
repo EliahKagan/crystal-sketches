@@ -1,9 +1,5 @@
 def seq(first, last)
-  if last < first
-    first.downto(last) { |i| puts i }
-  else
-    first.upto(last) { |i| puts i }
-  end
+  first.to(last) { |i| puts i }
 end
 
 case ARGV.size
