@@ -1,4 +1,4 @@
-# Simple Sieve of Eratosthenes implementation. Not well-optimized.
+# Simple Sieve of Eratosthenes implementation. Not well optimized.
 
 require "bit_array"
 require "math"
@@ -8,10 +8,10 @@ require "math"
 def raw_sieve(bound)
   maybe_prime = BitArray.new(bound + 1, true)
 
-  (3..Math.sqrt(bound).to_i).step(2) do |value|
-    next unless maybe_prime[value]
+  (3..Math.sqrt(bound).to_i).step(2) do |factor|
+    next unless maybe_prime[factor]
 
-    (value**2..bound).step(value * 2) do |multiple|
+    (factor**2..bound).step(factor * 2) do |multiple|
       maybe_prime[multiple] = false
     end
   end
@@ -35,4 +35,4 @@ def sieve(bound)
 end
 
 
-sieve(ARGV[0].to_i).each { |value| puts value }
+sieve(ARGV[0].to_i).each { |prime| puts prime }
