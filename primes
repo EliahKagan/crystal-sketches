@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+$VERBOSE = true
+
+require 'prime'
+
+bound = ARGV[0].to_i
+Prime.take_while { |value| value <= bound }.each { |value| puts value }
