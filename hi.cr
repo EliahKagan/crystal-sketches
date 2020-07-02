@@ -1,9 +1,9 @@
 def greetable_name(name)
   if name.nil?
-    "whoever you are"
+    "whoever you were"  # on end-of-input (e.g., Ctrl+D)
   else
-    name = name.strip
-    name.size == 0 ? "unnamed person" : name
+    stripped_name = name.strip
+    stripped_name.size == 0 ? "unnamed person" : stripped_name
   end
 end
 
