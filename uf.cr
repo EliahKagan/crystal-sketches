@@ -44,15 +44,19 @@ end
 
 
 n = 10
-
 sets = DisjointSets.new(n)
-sets.union(1, 7)
-sets.union(3, 8)
-sets.union(2, 4)
-sets.union(8, 9)
-sets.union(4, 7)
-#sets.union(2, 9)
-sets.union(0, 4)
+
+puts sets.union(1, 7)
+puts sets.union(3, 8)
+puts sets.union(2, 4)
+puts sets.union(8, 9)
+puts sets.union(4, 7)
+puts sets.union(9, 3)
+puts sets.union(1, 4)
+#puts sets.union(2, 9)
+puts sets.union(0, 4)
+puts sets.union(0, 1)
+puts
 
 (0...n).each do |i|
   print "#{i}:"
