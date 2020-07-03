@@ -43,6 +43,8 @@ class DisjointSets
 end
 
 
+# FIXME: Make a spec file instead.
+
 n = 10
 sets = DisjointSets.new(n)
 
