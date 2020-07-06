@@ -1,4 +1,4 @@
-if line = gets
+while line = gets
   line.each_char { |ch| printf " %X", ch.ord }
   puts
 end
