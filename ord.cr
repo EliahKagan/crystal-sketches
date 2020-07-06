@@ -1,4 +1,3 @@
 while line = gets
-  line.each_char { |ch| printf " %02X", ch.ord }
-  puts
+  puts line.chars.map { |ch| " %02X" % ch.ord }.join
 end
