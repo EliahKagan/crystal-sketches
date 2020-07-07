@@ -6,4 +6,11 @@ def collatz(n)
   end
 end
 
-collatz(101) { |n| puts n }
+
+extra_newline = false
+
+ARGV.map(&.to_i).each do |arg|
+  puts if extra_newline
+  collatz(arg) { |n| puts n }
+  extra_newline = true
+end
