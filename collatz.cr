@@ -1,3 +1,6 @@
+require "big"
+
+
 def collatz(seed)
   yield seed
   while seed != 1
@@ -9,7 +12,7 @@ end
 
 extra_newline = false
 
-ARGV.map(&.to_i).each do |seed|
+ARGV.map { |arg| BigInt.new(arg) }.each do |seed|
   puts if extra_newline
   collatz(seed) { |value| puts value }
   extra_newline = true
