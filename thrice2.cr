@@ -4,4 +4,6 @@ def thrice(first, second, third)
   yield third
 end
 
-thrice("Alice", "Bob", "Cassidy") { |name| puts "Hello, #{name}!" }
+thrice("Alice", "Bob", "Cassidy") do |name|
+  puts "Hello, #{name}!"
+end
