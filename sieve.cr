@@ -22,17 +22,15 @@ end
 
 # Sieve of Eratosthenes.
 def sieve(bound)
-  return [] of Int64 if bound < 2
+  return if bound < 2
 
   maybe_prime = raw_sieve(bound)
-  primes = [2]
+  yield 2
 
   (3..bound).step(2) do |value|
-    primes.push(value) if maybe_prime[value]
+    yield value if maybe_prime[value]
   end
-
-  primes
 end
 
 
-sieve(ARGV[0].to_i).each { |prime| puts prime }
+sieve(ARGV[0].to_i) { |prime| puts prime }
