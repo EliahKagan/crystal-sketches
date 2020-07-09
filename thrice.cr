@@ -4,4 +4,6 @@ def thrice
   yield
 end
 
-thrice { puts "Hello, world!" }
+thrice do
+  puts "Hello, world!"
+end
