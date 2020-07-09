@@ -1,5 +1,5 @@
 # Reads a line as an array of integers.
-def read_record()
+def read_record
   if line = gets
     line.split.map(&.to_i)
   else
