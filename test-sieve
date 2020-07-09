@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+bound=10000000
+diff <(./sieve "$bound") <(./primes "$bound")
