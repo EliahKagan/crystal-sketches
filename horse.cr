@@ -5,7 +5,7 @@ class Horse
   end
 
   def to_s(io)
-    io << "A horse, #{@name}."
+    io << "A horse, #@name." # Crystal does not support omitting the { } here.
   end
 end
 

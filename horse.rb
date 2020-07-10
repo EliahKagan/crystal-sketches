@@ -11,7 +11,7 @@ class Horse
   end
 
   def to_s
-    "A horse, #{@name}."
+    "A horse, #@name." # Ruby supports omitting { } here.
   end
 end
 
