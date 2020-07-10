@@ -4,7 +4,7 @@
 # Unlike Crystal, Ruby doesn't support overloading. But it does support
 # optional blocks via block_given?. This program tests if the major non-obvious
 # syntactic difference between do ... end and { ... } style blocks in Crystal
-# also appears in Ruby. See overload.cr.
+# also appears in Ruby. (It does.) See overload.cr.
 
 $VERBOSE = 1
 
