@@ -7,10 +7,6 @@ class Horse
     @name = name
   end
 
-  # def to_s(io)
-  #   io << "A horse, #{@name}."
-  # end
-
   def to_s
     "A horse, #{@name}."
   end
