@@ -4,7 +4,7 @@
 $VERBOSE = 1
 
 # A simple class, to demonstrate how Ruby string interpolation allows both
-# {@attribute} and #@attribute.
+# #{@attribute} and #@attribute.
 class Horse
   def initialize(name)
     @name = name
