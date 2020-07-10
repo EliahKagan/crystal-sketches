@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
+
 $VERBOSE = 1
 
+# A simple class, to demonstrate how Ruby string interpolation allows both
+# {@attribute} and #@attribute.
 class Horse
   def initialize(name)
     @name = name
@@ -12,5 +15,7 @@ class Horse
   end
 end
 
-h = Horse.new("Bob")
-puts h
+if __FILE__ == $PROGRAM_NAME
+  h = Horse.new('Bob')
+  puts h
+end

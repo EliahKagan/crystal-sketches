@@ -1,3 +1,5 @@
+# A simple class, to see if Crystal string interpolation allows both
+# {@attribute} and #@attribute.
 class Horse
   def initialize(@name : String)
   end
