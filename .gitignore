@@ -1,6 +1,11 @@
-# https://stackoverflow.com/a/31326382
+# Ignore files that have no "." (https://stackoverflow.com/a/31326382)
 *
 !*/
 !*.*
+
+# Exceptions, not ignored even though they have no ".".
 !/primes
 !/*-sieve
+
+# Ignore editor tempfiles.
+.*.swp
