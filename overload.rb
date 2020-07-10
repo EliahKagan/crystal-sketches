@@ -27,6 +27,7 @@ def g
   end
 end
 
+
 if __FILE__ == $PROGRAM_NAME
   f g do
     puts '...in a do-end block.'
