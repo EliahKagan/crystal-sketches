@@ -1,7 +1,9 @@
-x = 42
+def f
+  x = 42
 
-def g
-  x
+  def g
+    x
+  end
 end
 
-p g
+#p g
