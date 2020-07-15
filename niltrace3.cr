@@ -12,5 +12,7 @@ g = i32_or_default("10z", 42)
 x = f.call
 y = g.call
 
-puts "f #{typeof(f)} #{f.class}, x #{typeof(x)} #{x.class} #{x}"
-puts "g #{typeof(g)} #{g.class}, y #{typeof(y)} #{y.class} #{y}"
+puts "f   #{typeof(f)}   #{f.class}"
+puts "g   #{typeof(g)}   #{g.class}"
+puts "x   #{typeof(x)}   #{x.class}   #{x}"
+puts "y   #{typeof(y)}   #{y.class}   #{y}"
