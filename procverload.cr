@@ -2,7 +2,7 @@ def apply(arg : T, &block : Proc(T, Nil)) forall T
   yield arg
 end
 
-def apply(&block : Proc(T, Nil)) forall T
+def apply(&block : Proc(T, Nil) forall T)
   yield 42
 end
 
