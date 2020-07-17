@@ -1,7 +1,7 @@
 require "big"
 
 def pown(base, exponent)
-  return base.class.new(1) if exponent.zero?
+  return 1 if exponent.zero?
 
   power = pown(base, exponent // 2)
   power *= power
