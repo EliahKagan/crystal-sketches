@@ -1,7 +1,15 @@
 require "big"
 
 def pown(base, exponent)
-  return base.class.new(1) if exponent.zero?
+  #return base.class.new(1) if exponent.zero?
+
+  if exponent.zero?
+    if base.is_a?(BigInt)
+      return BigInt.new(1)
+    else
+      return 0.0
+    end
+  end
 
   power = pown(base, exponent // 2)
   power *= power
