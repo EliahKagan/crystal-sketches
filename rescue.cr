@@ -1,14 +1,16 @@
 require "big"
 
-def parse(text)
-  BigInt.new(text)
-rescue ArgumentError
-  puts "fail"
-  nil
-ensure
-  puts "win"
+class String
+  def parse_bigint?
+    result = BigInt.new(self)
+    puts "win(#{result})"
+    result
+  rescue ArgumentError
+    puts %{fail("#{self}")}
+    nil
+  end
 end
 
-ARGV.each do |arg|
-  puts "Got #{value}." if (value = parse(arg))
+ARGV.map(&.parse_bigint?).reject(&.nil?).each do |value|
+  puts "Got #{value}."
 end
