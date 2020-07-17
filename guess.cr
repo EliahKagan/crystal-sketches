@@ -20,12 +20,15 @@ def rib(message)
 end
 
 class Game
-  @try_count = 0
+  @try_count : Int32 = 0
   @last_guess : Int32? = nil
+  @guesses : Array(Int32)
+  @goal : Int32
 
-  def initialize(@low : Int32, @goal : Int32, @high : Int32)
-    raise "goal out of range" unless low <= goal <= high
+  def initialize(@low : Int32, @high : Int32)
+    raise "range is empty" unless low <= high
     @guesses = Array(Int32).new(@high + 1, 0)
+    @goal = @low + rand(@high - @low + 1)
   end
 
   def do_guess(guess)
@@ -91,7 +94,7 @@ HIGH = 100
 puts "I'm thinking of a number from #{LOW} to #{HIGH}. " \
      "You're welcome to guess."
 
-game = Game.new(LOW, (LOW..HIGH).sample, HIGH)
+game = Game.new(LOW, HIGH)
 
 loop do
   print "? "
