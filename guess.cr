@@ -56,6 +56,7 @@ class Game
       critique_strategy(guess)
     end
 
+    @guesses[guess] += 1 if @low <= guess <= @high
     @last_guess = guess
     false
   end
