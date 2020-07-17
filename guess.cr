@@ -82,7 +82,7 @@ class Game
     when 2
       puts "Think about this. #{priors[0]} and #{priors[1]} were too #{side}."
     else
-      pretty_priors = "#{priors[...-1].join(", ")} and #{priors[-1]}."
+      pretty_priors = "#{priors[...-1].join(", ")} and #{priors[-1]}"
       puts "No. It's too #{side}, like #{pretty_priors}."
       rib
     end
