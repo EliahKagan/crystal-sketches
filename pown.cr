@@ -1,12 +1,14 @@
 require "big"
 
 def pown(base, exponent)
-  return base.class.new(1) if exponent.zero?
-
-  power = pown(base, exponent // 2)
-  power *= power
-  power *= base if exponent.odd?
-  power
+  if exponent.zero?
+    base.class.new(1)
+  else
+    power = pown(base, exponent // 2)
+    power *= power
+    power *= base if exponent.odd?
+    power
+  end
 end
 
 def die(message)
