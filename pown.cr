@@ -12,7 +12,7 @@ struct Number
 end
 
 def die(message)
-  STDERR.puts("#{PROGRAM_NAME}: error: #{message}")
+  STDERR.puts "#{PROGRAM_NAME}: error: #{message}"
   exit 1
 end
 
