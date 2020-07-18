@@ -1,6 +1,6 @@
 require "big"
 
-def pown(base : Number, exponent : Int32)
+def pown(base, exponent)
   return base.class.new(1) if exponent.zero?
 
   power = pown(base, exponent // 2)
