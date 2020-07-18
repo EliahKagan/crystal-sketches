@@ -1,12 +1,14 @@
 require "big"
 
-def pown(base, exponent)
-  return base.class.new(1) if exponent.zero?
+struct Number
+  def pown(exponent)
+    return self.class.new(1) if exponent.zero?
 
-  power = pown(base, exponent // 2)
-  power *= power
-  power *= base if exponent.odd?
-  power
+    power = self.pown(exponent // 2)
+    power *= power
+    power *= self if exponent.odd?
+    power
+  end
 end
 
 def die(message)
@@ -42,4 +44,4 @@ die "too many arguments" if ARGV.size > 2
 
 base = parse_base(ARGV[0])
 exponent = parse_exponent(ARGV[1])
-puts pown(base, exponent)
+puts base.pown(exponent)
