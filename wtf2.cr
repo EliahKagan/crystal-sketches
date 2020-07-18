@@ -4,12 +4,12 @@ def thunk_of(expression : String)
   literal_value = expression.to_u16?
   puts "DEBUG: #{typeof(literal_value)}"
   if literal_value
-    #lv : UInt16 = literal_value
+    # lv : UInt16 = literal_value
     puts "DEBUG: #{typeof(literal_value)}"
-    return ->() { literal_value }
+    return ->{ literal_value }
   end
 
-  ->() { 42 }
+  ->{ 42 }
 end
 
 p thunk_of("10").call

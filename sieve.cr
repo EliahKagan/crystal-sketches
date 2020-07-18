@@ -3,7 +3,6 @@
 require "bit_array"
 require "math"
 
-
 # Helper function for sieve().
 def raw_sieve(bound)
   maybe_prime = BitArray.new(bound + 1, true)
@@ -19,7 +18,6 @@ def raw_sieve(bound)
   maybe_prime
 end
 
-
 # Sieve of Eratosthenes.
 def sieve(bound)
   return if bound < 2
@@ -31,6 +29,5 @@ def sieve(bound)
     yield value if maybe_prime[value]
   end
 end
-
 
 sieve(ARGV[0].to_i) { |prime| puts prime }

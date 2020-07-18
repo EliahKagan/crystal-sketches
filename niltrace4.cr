@@ -2,9 +2,9 @@ def i32_or_default(text : String, default : Int32)
   value = text.to_i?
   if value
     copy : Int32 = value
-    -> { copy }
+    ->{ copy }
   else
-    -> { default }
+    ->{ default }
   end
 end
 

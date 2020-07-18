@@ -1,6 +1,5 @@
 require "big"
 
-
 def collatz(seed)
   yield seed
   while seed != 1
@@ -8,7 +7,6 @@ def collatz(seed)
     yield seed
   end
 end
-
 
 extra_newline = false
 

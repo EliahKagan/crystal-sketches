@@ -30,4 +30,3 @@ f
 f { 42 }
 f { |arg| arg.upcase }
 f { |arg1, arg2| {arg1, arg2} }
-

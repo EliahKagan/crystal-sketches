@@ -1,9 +1,9 @@
 def i32_or_default(text : String, default : Int32)
   value = text.to_i?
   if value
-    -> { value }
+    ->{ value }
   else
-    -> { default }
+    ->{ default }
   end
 end
 

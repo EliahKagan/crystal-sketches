@@ -42,7 +42,6 @@ class DisjointSets
   end
 end
 
-
 # FIXME: Make a spec file instead.
 
 n = 10
@@ -55,7 +54,7 @@ puts sets.union(8, 9)
 puts sets.union(4, 7)
 puts sets.union(9, 3)
 puts sets.union(1, 4)
-#puts sets.union(2, 9)
+# puts sets.union(2, 9)
 puts sets.union(0, 4)
 puts sets.union(0, 1)
 puts

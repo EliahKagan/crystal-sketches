@@ -5,7 +5,6 @@
 # "The difference between using `do ... end` and `{ ... }` is that `do ... end`
 #  binds to the left-most call, while `{ ... }` binds to the right-most call"
 
-
 # This f accepts: one argument + a block.
 def f(x)
   puts "Called f(#{x}) with a block."
@@ -27,7 +26,6 @@ def g
   puts "Called g() with a block."
   yield
 end
-
 
 f g do
   puts "...in a do-end block."

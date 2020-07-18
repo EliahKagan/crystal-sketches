@@ -1,5 +1,5 @@
 def make_counter(start)
-  ->() do
+  ->do
     ret = start
     start += 1
     ret
