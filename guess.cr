@@ -8,7 +8,7 @@ RIBS = [
   "Is someone making you play this badly?",
   "That should never have happened.",
   "You are bad at this game.",
-  "Delete your account! (Ctrl+D)"
+  "Delete your account! (Ctrl+D)",
 ]
 
 def rib
@@ -33,7 +33,7 @@ class Game
 
   def do_guess(guess)
     @try_count += 1
-    
+
     if guess == @goal
       pretty_count = (@try_count == 1 ? "just one try" : "#{@try_count} tries")
       puts "Correct! You guessed #{guess} in #{pretty_count}."
@@ -89,7 +89,7 @@ class Game
   end
 end
 
-LOW = 1
+LOW  =   1
 HIGH = 100
 
 puts "I'm thinking of a number from #{LOW} to #{HIGH}. " \
