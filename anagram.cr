@@ -42,6 +42,8 @@ class Configuration
   getter strategy = :sort
 
   def initialize
+    failed = false
+
     OptionParser.parse do |parser|
       parser.on "-v", "--version", "Show version information and exit" do
         puts "anagram, version 0.2"
@@ -58,7 +60,13 @@ class Configuration
       parser.on "-H", "--hash", "Use hashing-based anagram comparison" do
         @strategy = :hash
       end
+      parser.invalid_option do |option|
+        STDERR.puts "#{PROGRAM_NAME}: error: invalid option: #{option}"
+        failed = true
+      end
     end
+
+    exit 1 if failed
   end
 end
  
