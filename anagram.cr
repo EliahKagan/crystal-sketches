@@ -17,8 +17,8 @@ class String
   end
 
   # Performs an action on each non-whitespace character, with case folding.
-  def each_non_ws_char
-    self.each_non_ws_char.each { |ch| yield ch }
+  def each_non_ws_char(&block)
+    self.each_non_ws_char.each(&block)
   end
 
   # Tells if this is an anagram of another string, ignoring whitespace.
