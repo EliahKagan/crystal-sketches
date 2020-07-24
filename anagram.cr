@@ -1,19 +1,67 @@
 # Program to tell if strings are anagrams, modulo whitespace.
 
-# Anagram-related extensions for strings.
-class String
-  # Gets an array of non-whitespace characters, with repetitions, in
-  # lexicographic order, with case-folding applied, from this string.
-  def non_ws_chars
-    self.downcase.each_char.reject(&.whitespace?).to_a.sort!
-  end
+require "option_parser"
 
-  # Tells if this string is an anagram of another, ignoring whitespace.
-  def anagram_of?(other)
-    self.non_ws_chars == other.non_ws_chars
+# Make lazy sequences sortable, creating a new array.
+module Iterator
+  def sort
+    self.to_a.sort!
   end
 end
 
+# Anagram-related extensions for strings.
+class String
+  # Gets a sequence of the non-whitespace characters, with case folding.
+  def each_non_ws_char
+    self.downcase.each_char.reject(&.whitespace?)
+  end
+
+  # Performs an action on each non-whitespace character, with case folding.
+  def each_non_ws_char
+    self.each_non_ws_char.each { |ch| yield ch }
+  end
+
+  # Tells if this is an anagram of another string, ignoring whitespace.
+  # Uses sorting.
+  def anagram_by_sort?(other)
+    self.each_non_ws_char.sort == other.each_non_ws_char.sort
+  end
+
+  # Tells if this is an anagram of another string, ignoring whitespace.
+  # Uses hashing.
+  def anagram_by_hash?(other)
+    freqs = Hash(Char, Int32).new(0)
+    self.each_non_ws_char { |ch| freqs[ch] += 1 }
+    other.each_non_ws_char { |ch| freqs[ch] -= 1 }
+    freqs.values.all? &.zero?
+  end
+end
+
+# Represents configuration information obtained from parsing options.
+class Configuration
+  getter strategy = :sort
+
+  def initialize
+    OptionParser.parse do |parser|
+      parser.on "-v", "--version", "Show version information and exit" do
+        puts "anagram, version 0.2"
+        exit 0
+      end
+      parser.on "-h", "--help", "Show this help and exit" do
+        puts parser
+        exit 0
+      end
+      parser.on "-s", "--sort",
+                "Use sorting-based anagram comparison (default)" do
+        @strategy = :sort
+      end
+      parser.on "-h", "--hash", "Use hashing-based anagram comparison" do
+        @strategy = :hash
+      end
+    end
+  end
+end
+ 
 def prompt(label)
   print "#{label}> "
   input = gets
@@ -21,12 +69,26 @@ def prompt(label)
   input
 end
 
+anagram_comparer =
+  case Configuration.new.strategy
+  when :sort
+    puts "Using SORTING anagram-comparison strategy."
+    ->(lhs : String, rhs : String) { lhs.anagram_by_sort?(rhs) }
+  when :hash
+    puts "Using HASHING anagram-comparison strategy."
+    ->(lhs : String, rhs : String) { lhs.anagram_by_hash?(rhs) }
+  else
+    raise "Internal error: unrecognized strategy"
+  end
+
+puts
+
 loop do
   puts "Enter two strings, or Ctrl+D to quit."
   text1 = prompt(1)
   text2 = prompt(2)
   
-  if text1.anagram_of?(text2)
+  if anagram_comparer.call(text1, text2)
     puts "YES, those are anagrams."
   else
     puts "NO, those are not anagrams."
