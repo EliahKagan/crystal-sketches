@@ -69,7 +69,7 @@ class Configuration
     exit 1 if failed
   end
 end
- 
+
 def prompt(label)
   print "#{label}> "
   input = gets
@@ -94,7 +94,7 @@ loop do
   puts "Enter two strings, or Ctrl+D to quit."
   text1 = prompt(1)
   text2 = prompt(2)
-  
+
   if anagram_comparer.call(text1, text2)
     puts "YES, those ARE anagrams."
   else
