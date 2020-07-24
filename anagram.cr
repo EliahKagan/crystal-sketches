@@ -81,9 +81,8 @@ anagram_comparer =
     raise "Internal error: unrecognized strategy"
   end
 
-puts
-
 loop do
+  puts
   puts "Enter two strings, or Ctrl+D to quit."
   text1 = prompt(1)
   text2 = prompt(2)
@@ -93,6 +92,4 @@ loop do
   else
     puts "NO, those are NOT anagrams."
   end
-
-  puts
 end
