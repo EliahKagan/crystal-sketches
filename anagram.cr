@@ -89,9 +89,9 @@ loop do
   text2 = prompt(2)
   
   if anagram_comparer.call(text1, text2)
-    puts "YES, those are anagrams."
+    puts "YES, those ARE anagrams."
   else
-    puts "NO, those are not anagrams."
+    puts "NO, those are NOT anagrams."
   end
 
   puts
