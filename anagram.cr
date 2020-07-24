@@ -13,7 +13,7 @@ end
 class String
   # Gets a sequence of the non-whitespace characters, with case folding.
   def each_non_ws_char
-    self.downcase.each_char.reject(&.whitespace?)
+    self.each_char.reject(&.whitespace?).map(&.downcase)
   end
 
   # Performs an action on each non-whitespace character, with case folding.
