@@ -51,11 +51,11 @@ class Configuration
         puts parser
         exit 0
       end
-      parser.on "-s", "--sort",
+      parser.on "-S", "--sort",
                 "Use sorting-based anagram comparison (default)" do
         @strategy = :sort
       end
-      parser.on "-h", "--hash", "Use hashing-based anagram comparison" do
+      parser.on "-H", "--hash", "Use hashing-based anagram comparison" do
         @strategy = :hash
       end
     end
