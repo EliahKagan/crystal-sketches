@@ -55,19 +55,14 @@ class Graph
     #components = [] of Array(Int32)
     #each_component_by_dfs_rec { |component| components << component }
     #components
-    
-    #collect_to_array do |components|
-    #  each_component_by_dfs_rec { |component| components << component }
-    #end
-
-    #collect_to_array(&.each_component_by_dfs_rec)
-
-    collect_to_array(->{ each_component_by_dfs_rec { |x| yield x } })
+    collect_to_array do |components|
+      each_component_by_dfs_rec { |component| components << component }
+    end
   end
 
-  private def collect_to_array(proc)
+  private def collect_to_array(&block)
     elems = [] of Array(Int32)
-    proc.call { |elem| elems << elem }
+    yield elems
     elems
   end
 end
