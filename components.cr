@@ -45,12 +45,38 @@ class Graph
     end
 
     (0...order).each do |start|
-      component = [] of Int32
-      dfs.call(start, vertex_consumer { |vertex| component << vertex })
-      components << component.sort! unless component.empty?
+      out = [] of Int32
+      dfs.call(start, vertex_consumer { |vertex| out << vertex })
+      components << out.sort! unless out.empty?
     end
 
     components
+  end
+
+  # Gets an array of graph components, via iterative DFS.
+  def components_by_dfs
+    vis = [false] * order
+    stack = [] of Int32
+
+    dfs = ->(start : Int32) do
+      raise "Internal error: already visited component" if vis[start]
+      out = [] of Int32
+      
+      push = ->(src : Int32) do
+        vis[src] = true
+        stack.push(src)
+        out << src
+      end
+
+      push.call(start)
+      until stack.empty?
+        @adj[stack.pop].reject { |dest| vis[dest] }.each(&push)
+      end
+
+      out.sort!
+    end
+
+    (0...order).reject { |start| vis[start] }.map(&dfs).to_a
   end
 end
 
