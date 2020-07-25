@@ -5,7 +5,7 @@ require "option_parser"
 # Make lazy sequences sortable, creating a new array.
 module Iterator
   def sort
-    self.to_a.sort!
+    to_a.sort!
   end
 end
 
@@ -14,26 +14,26 @@ class String
   # Tells if this is an anagram of another string, ignoring whitespace.
   # Uses sorting.
   def anagram_by_sort?(other)
-    self.each_non_ws_char.sort == other.each_non_ws_char.sort
+    each_non_ws_char.sort == other.each_non_ws_char.sort
   end
 
   # Tells if this is an anagram of another string, ignoring whitespace.
   # Uses hashing.
   def anagram_by_hash?(other)
     freqs = Hash(Char, Int32).new(0)
-    self.each_non_ws_char { |ch| freqs[ch] += 1 }
+    each_non_ws_char { |ch| freqs[ch] += 1 }
     other.each_non_ws_char { |ch| freqs[ch] -= 1 }
     freqs.values.all? &.zero?
   end
 
   # Gets a sequence of the non-whitespace characters, with case folding.
   protected def each_non_ws_char
-    self.each_char.reject(&.whitespace?).map(&.downcase)
+    each_char.reject(&.whitespace?).map(&.downcase)
   end
 
   # Performs an action on each non-whitespace character, with case folding.
   protected def each_non_ws_char
-    self.each_non_ws_char.each { |ch| yield ch }
+    each_non_ws_char.each { |ch| yield ch }
   end
 end
 
