@@ -1,3 +1,4 @@
+# Extensions for objects that are sequences of integers.
 class Object
   def evens
     self.select(&:even?)
