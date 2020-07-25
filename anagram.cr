@@ -11,16 +11,6 @@ end
 
 # Anagram-related extensions for strings.
 class String
-  # Gets a sequence of the non-whitespace characters, with case folding.
-  def each_non_ws_char
-    self.each_char.reject(&.whitespace?).map(&.downcase)
-  end
-
-  # Performs an action on each non-whitespace character, with case folding.
-  def each_non_ws_char
-    self.each_non_ws_char.each { |ch| yield ch }
-  end
-
   # Tells if this is an anagram of another string, ignoring whitespace.
   # Uses sorting.
   def anagram_by_sort?(other)
@@ -34,6 +24,16 @@ class String
     self.each_non_ws_char { |ch| freqs[ch] += 1 }
     other.each_non_ws_char { |ch| freqs[ch] -= 1 }
     freqs.values.all? &.zero?
+  end
+
+  # Gets a sequence of the non-whitespace characters, with case folding.
+  protected def each_non_ws_char
+    self.each_char.reject(&.whitespace?).map(&.downcase)
+  end
+
+  # Performs an action on each non-whitespace character, with case folding.
+  protected def each_non_ws_char
+    self.each_non_ws_char.each { |ch| yield ch }
   end
 end
 
