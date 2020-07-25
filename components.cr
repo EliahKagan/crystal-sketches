@@ -52,9 +52,18 @@ class Graph
 
   # Recursive DFS, collected into an array of components.
   def components_by_dfs_rec
-    components = [] of Array(Int32)
-    each_component_by_dfs_rec { |component| components << component }
-    components
+    #components = [] of Array(Int32)
+    #each_component_by_dfs_rec { |component| components << component }
+    #components
+    collect_to_array do |components|
+      each_component_by_dfs_rec { |component| components << component }
+    end
+  end
+
+  private def collect_to_array(&block)
+    elems = [] of Array(Int32)
+    yield elems
+    elems
   end
 end
 
