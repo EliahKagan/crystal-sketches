@@ -143,3 +143,15 @@ graph = edges.to_graph
 dfs_rec = graph.components_by_dfs_rec
 puts "Found #{regular_pluralize(dfs_rec.size, "component")} by recursive DFS:"
 dfs_rec.each { |component| pp component }
+puts
+
+dfs_iter = graph.components_by_dfs
+puts "Found #{regular_pluralize(dfs_iter.size, "component")} by iterative DFS:"
+dfs_iter.each { |component| pp component }
+puts
+
+if dfs_rec == dfs_iter
+  puts "I'm happy to say those results are the same."
+else
+  puts "Oh NO! Those results are NOT the same! :("
+end
