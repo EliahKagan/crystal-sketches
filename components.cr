@@ -27,6 +27,8 @@ class Graph
   def each_component_dfs_rec(&block)
     vis = [false] * order
 
+    dfs = ->(src : Int32, action : Proc(Int32, Nil)) { }
+
     dfs = ->(src : Int32, action : Proc(Int32, Nil)) do
       return if vis[src]
       vis[src] = true
@@ -51,9 +53,9 @@ end
 
 def read_edges(io)
   io.each_line
-    .map &.split
-    .tap { |tokens| raise "wrong record length" if tokens.size != 2 }
-    .map &.map(&.to_i)
+    .map(&.split)
+   #.tap { |tokens| raise "wrong record length" if tokens.size != 2 }
+    .map(&.map(&.to_i))
     .map { |values| {values[0], values[1]} }
     .to_a
 end
