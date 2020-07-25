@@ -28,7 +28,7 @@ class Graph
   end
 
   # Recursive DFS to perform an operation on each component.
-  def each_component_dfs_rec(&block)
+  def each_component_by_dfs_rec(&block)
     vis = [false] * order
 
     dfs = vertex_proc { }
@@ -47,9 +47,9 @@ class Graph
   end
 
   # Recursive DFS, collected into an array of components.
-  def each_component_dfs_rec
+  def components_by_dfs_rec
     components = [] of Array(Int32)
-    each_component_dfs_rec { |component| components << component }
+    each_component_by_dfs_rec { |component| components << component }
     components
   end
 end
@@ -83,6 +83,12 @@ class EdgeList
   def each
     @edges.each
   end
+
+  def to_graph
+    graph = Graph.new(order)
+    each { |edge| graph.add_edge(*edge) }
+    graph
+  end
 end
 
 def read_edges(io = ARGF)
@@ -97,9 +103,17 @@ def read_edges(io = ARGF)
   edges
 end
 
+def regular_pluralize(word, count)
+  count == 1 ? "#{count} #{word}" : "#{count} #{word}s"
+end
+
 edges = read_edges
 puts "Got #{edges.order} vertices and #{edges.size} edges. The edges are:"
 edges.each { |edge| pp edge }
 puts
 
-#puts "Components:"
+graph = edges.to_graph
+
+dfs_rec = graph.components_by_dfs_rec
+puts "Found #{regular_pluralize(dfs_rec.size, "component")} by recursive DFS:"
+dfs_rec.each { |component| pp component }
