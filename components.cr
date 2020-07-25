@@ -1,6 +1,10 @@
 # components.cr - Given edges, enumerates components in multiple ways.
 
-def vertex_proc(&block : (Int32, Proc(Int32, Nil)) -> Nil)
+def vertex_applicator(&block : (Int32, Proc(Int32, Nil)) -> Nil)
+  block
+end
+
+def vertex_consumer(&block : Int32 -> Nil)
   block
 end
 
@@ -31,9 +35,9 @@ class Graph
   def each_component_by_dfs_rec(&block)
     vis = [false] * order
 
-    dfs = vertex_proc { }
-    dfs = vertex_proc do |src, action|
-      return if vis[src]
+    dfs = vertex_applicator { }
+    dfs = vertex_applicator do |src, action|
+      next if vis[src]
       vis[src] = true
       action.call(src)
       @adj[src].each { |dest| dfs.call(dest, action) }
@@ -41,7 +45,7 @@ class Graph
 
     (0...order).each do |start|
       component = [] of Int32
-      dfs.call(start, ->(vertex : Int32) { component << vertex })
+      dfs.call(start, vertex_consumer { |vertex| component << vertex })
       yield component.sort! unless component.empty?
     end
   end
@@ -103,7 +107,7 @@ def read_edges(io = ARGF)
   edges
 end
 
-def regular_pluralize(word, count)
+def regular_pluralize(count, word)
   count == 1 ? "#{count} #{word}" : "#{count} #{word}s"
 end
 
