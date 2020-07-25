@@ -37,7 +37,7 @@ class String
   end
 end
 
-# The strategy used to compare string to determine if they are anagrams.
+# The strategy used to compare strings to determine if they are anagrams.
 enum Strategy
   Sort
   Hash
@@ -53,14 +53,14 @@ enum Strategy
     end
   end
 
-  def comparer
+  def call(lhs, rhs)
     case self
     when Sort
-      ->(lhs : String, rhs : String) { lhs.anagram_by_sort?(rhs) }
+      lhs.anagram_by_sort?(rhs)
     when Hash
-      ->(lhs : String, rhs : String) { lhs.anagram_by_hash?(rhs) }
+      lhs.anagram_by_hash?(rhs)
     else
-      raise "Internal error: can't make comparer of unrecognised strategy"
+      raise "Internal error: can't compare using unrecognized strategy"
     end
   end
 end
@@ -114,7 +114,7 @@ loop do
   text1 = prompt(1)
   text2 = prompt(2)
 
-  if conf.strategy.comparer.call(text1, text2)
+  if conf.strategy.call(text1, text2)
     puts "YES, those ARE anagrams."
   else
     puts "NO, those are NOT anagrams."
