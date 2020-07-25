@@ -54,13 +54,52 @@ class Graph
   end
 end
 
-def read_edges(io)
-  io.each_line
-    .map(&.split)
-   #.tap { |tokens| raise "wrong record length" if tokens.size != 2 }
-    .map(&.map(&.to_i))
-    .map { |values| {values[0], values[1]} }
-    .to_a
+# A list of undirected edges.
+class EdgeList
+  @edges = [] of Tuple(Int32, Int32)
+  @max_vertex = -1
+
+  # The number of edges.
+  def size
+    @edges.size
+  end
+
+  # The number of vertices, assuming contiguity.
+  # That is, if n is an endpoint, it assumes all vertices in (0..n) exist.
+  def order
+    @max_vertex + 1
+  end
+
+  def add(vertex1, vertex2)
+    raise "vertices must be nonnegative" if vertex1 < 0 || vertex2 < 0
+    @edges << {vertex1, vertex2}
+    @max_vertex = {@max_vertex, vertex1, vertex2}.max
+  end
+
+  def each(&block)
+    @edges.each { |edge| yield edge }
+  end
+
+  def each
+    @edges.each
+  end
 end
 
-read_edges(ARGF).each { |edge| pp edge }
+def read_edges(io = ARGF)
+  edges = EdgeList.new
+
+  io.each_line
+    .map(&.split)
+    .tap { |tokens| raise "wrong record length" if tokens.size != 2 }
+    .map(&.map(&.to_i))
+    .each { |endpoints| edges.add(endpoints[0], endpoints[1]) }
+
+  edges
+end
+
+edges = read_edges
+puts "Got #{edges.order} vertices and #{edges.size} edges. The edges are:"
+edges.each { |edge| pp edge }
+puts
+
+#puts "Components:"
