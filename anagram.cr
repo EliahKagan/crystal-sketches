@@ -37,9 +37,37 @@ class String
   end
 end
 
+# The strategy used to compare string to determine if they are anagrams.
+enum Strategy
+  Sort
+  Hash
+
+  def to_s(io)
+    case self
+    when Sort
+      io << "SORTING"
+    when Hash
+      io << "HASHING"
+    else
+      raise "Internal error: can't give name of unrecognized strategy"
+    end
+  end
+
+  def comparer
+    case self
+    when Sort
+      ->(lhs : String, rhs : String) { lhs.anagram_by_sort?(rhs) }
+    when Hash
+      ->(lhs : String, rhs : String) { lhs.anagram_by_hash?(rhs) }
+    else
+      raise "Internal error: can't make comparer of unrecognised strategy"
+    end
+  end
+end
+
 # Represents configuration information obtained from parsing options.
 class Configuration
-  getter strategy = :sort
+  getter strategy = Strategy::Sort
 
   def initialize
     failed = false
@@ -55,10 +83,10 @@ class Configuration
       end
       parser.on "-S", "--sort",
                 "Use sorting-based anagram comparison (default)" do
-        @strategy = :sort
+        @strategy = Strategy::Sort
       end
       parser.on "-H", "--hash", "Use hashing-based anagram comparison" do
-        @strategy = :hash
+        @strategy = Strategy::Hash
       end
       parser.invalid_option do |option|
         STDERR.puts "#{PROGRAM_NAME}: error: invalid option: #{option}"
@@ -77,17 +105,8 @@ def prompt(label)
   input
 end
 
-anagram_comparer =
-  case Configuration.new.strategy
-  when :sort
-    puts "Using SORTING anagram-comparison strategy."
-    ->(lhs : String, rhs : String) { lhs.anagram_by_sort?(rhs) }
-  when :hash
-    puts "Using HASHING anagram-comparison strategy."
-    ->(lhs : String, rhs : String) { lhs.anagram_by_hash?(rhs) }
-  else
-    raise "Internal error: unrecognized strategy"
-  end
+conf = Configuration.new
+puts "Using #{conf.strategy} anagram-comparison strategy."
 
 loop do
   puts
@@ -95,7 +114,7 @@ loop do
   text1 = prompt(1)
   text2 = prompt(2)
 
-  if anagram_comparer.call(text1, text2)
+  if conf.strategy.comparer.call(text1, text2)
     puts "YES, those ARE anagrams."
   else
     puts "NO, those are NOT anagrams."
