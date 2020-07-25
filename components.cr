@@ -1,5 +1,9 @@
 # components.cr - Given edges, enumerates components in multiple ways.
 
+def vertex_proc(&block : (Int32, Proc(Int32, Nil)) -> Nil)
+  block
+end
+
 # An adjacency-list representation of an unweighted undirected graph.
 class Graph
   # Initializes a graph with no edges and *order* vertices.
@@ -27,9 +31,8 @@ class Graph
   def each_component_dfs_rec(&block)
     vis = [false] * order
 
-    dfs = ->(src : Int32, action : Proc(Int32, Nil)) { }
-
-    dfs = ->(src : Int32, action : Proc(Int32, Nil)) do
+    dfs = vertex_proc { }
+    dfs = vertex_proc do |src, action|
       return if vis[src]
       vis[src] = true
       action.call(src)
