@@ -31,8 +31,9 @@ class Graph
     row2 << vertex1
   end
 
-  # Recursive DFS to perform an operation on each component.
-  def each_component_by_dfs_rec(&block)
+  # Gets an array of graph components, via recursive DFS.
+  def components_by_dfs_rec
+    components = [] of Array(Int32)
     vis = [false] * order
 
     dfs = vertex_applicator { }
@@ -46,14 +47,9 @@ class Graph
     (0...order).each do |start|
       component = [] of Int32
       dfs.call(start, vertex_consumer { |vertex| component << vertex })
-      yield component.sort! unless component.empty?
+      components << component.sort! unless component.empty?
     end
-  end
 
-  # Recursive DFS, collected into an array of components.
-  def components_by_dfs_rec
-    components = [] of Array(Int32)
-    each_component_by_dfs_rec { |component| components << component }
     components
   end
 end
