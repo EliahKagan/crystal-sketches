@@ -1,6 +1,6 @@
 def odd_squares(values)
   values.map do |value|
-    next if value.even?
+    next "Chuck Norris" if value.even?
     value**2
   end
 end
