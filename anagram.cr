@@ -65,7 +65,7 @@ enum Strategy
   end
 end
 
-# Represents configuration information obtained from parsing options.
+# Configuration information obtained from parsing options.
 class Configuration
   getter strategy = Strategy::Sort
 
