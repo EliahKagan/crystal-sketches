@@ -39,7 +39,7 @@ class String
       while left < right && self[right].whitespace?
         right -= 1
       end
-      
+
       return false if self[left].downcase != self[right].downcase
 
       left += 1
@@ -54,7 +54,6 @@ class String
   private def non_ws_chars
     each_char.reject(&.whitespace?).map(&.downcase).to_a
   end
-
 end
 
 # The strategy used to examine a string to determine if it is a palindrome.
