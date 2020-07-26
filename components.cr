@@ -151,7 +151,7 @@ class DisjointSets
   def components
     buckets = range.map { [] of Int32 }
     range.each { |elem| buckets[find_set(elem)] << elem }
-    buckets.reject(&.empty?)
+    buckets.reject(&.empty?).sort_by!(&.first)
   end
 
   private def find_set(elem)
