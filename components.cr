@@ -1,5 +1,7 @@
 # components.cr - Given edges, enumerates components in multiple ways.
 
+require "deque"
+
 def vertex_applicator(&block : (Int32, Proc(Int32, Nil)) -> Nil)
   block
 end
@@ -77,6 +79,32 @@ class Graph
     end
 
     each_vertex.reject { |start| vis[start] }.map(&dfs).to_a
+  end
+
+  # Gets an array of graph components, via BFS.
+  def components_by_bfs
+    vis = [false] * order
+    queue = Deque(Int32).new
+
+    bfs = ->(start : Int32) do
+      raise "Internal error: already visited component" if vis[start]
+      out = [] of Int32
+      
+      push = ->(src : Int32) do
+        vis[src] = true
+        queue.push(src)
+        out << src
+      end
+
+      push.call(start)
+      until queue.empty?
+        @adj[queue.shift].reject { |dest| vis[dest] }.each(&push)
+      end
+
+      out.sort!
+    end
+
+    each_vertex.reject { |start| vis[start] }.map(&bfs).to_a
   end
 
   # Call a block for each vertex.
@@ -160,7 +188,12 @@ puts "Found #{regular_pluralize(dfs_iter.size, "component")} by iterative DFS:"
 dfs_iter.each { |component| pp component }
 puts
 
-if dfs_rec == dfs_iter
+bfs = graph.components_by_bfs
+puts "Found #{regular_pluralize(bfs.size, "component")} by BFS:"
+bfs.each { |component| pp component }
+puts
+
+if dfs_rec == dfs_iter == bfs
   puts "I'm happy to say those results are the same."
 else
   puts "Oh NO! Those results are NOT the same! :("
