@@ -77,12 +77,6 @@ class Graph
     end
 
     (0...order).each.reject { |start| vis[start] }.map(&dfs).to_a
-
-    # components = [] of Array(Int32)
-    # (0...order).each do |start|
-    #   components << dfs.call(start) unless vis[start]
-    # end
-    # components
   end
 end
 
