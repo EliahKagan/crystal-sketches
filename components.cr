@@ -118,6 +118,64 @@ class Graph
   end
 end
 
+# Disjoint set union data structure.
+class DisjointSets
+  @elems : Array(Int32)
+
+  # Does *count* "makeset" operations, creating singletons *0* to *count - 1*.
+  def initialize(count)
+    @elems = [-1] * count
+  end
+
+  def union(elem1, elem2)
+    # Find the ancestors. Stop if they are already the same.
+    elem1 = find_set(elem1)
+    elem2 = find_set(elem2)
+    return if elem1 == elem2
+
+    # Unite by rank.
+    if @elems[elem2] < @elems[elem1]
+      # elem2 has superior (more negative) rank. It will remain the parent.
+      @elems[elem1] = elem2
+    else
+      # If elem1 and elem2 are of the same rank, promote elem1.
+      @elems[elem1] -= 1 if @elems[elem1] == @elems[elem2]
+
+      # elem1 has superior (more negative) rank. It will remain the parent.
+      @elems[elem2] = elem1
+    end
+
+    nil
+  end
+
+  def components
+    buckets = range.map { [] of Int32 }
+    range.each { |elem| buckets[find_set(elem)] << elem }
+    buckets.reject(&.empty?)
+  end
+
+  private def find_set(elem)
+    # Find the ancestor.
+    leader = elem
+    while @elems[leader] >= 0
+      leader = @elems[leader]
+    end
+
+    # Compress the path.
+    while elem != leader
+      parent = @elems[elem]
+      @elems[elem] = leader
+      elem = parent
+    end
+
+    leader
+  end
+
+  private def range
+    0...@elems.size
+  end
+end
+
 # A list of undirected edges.
 class EdgeList
   @edges = [] of Tuple(Int32, Int32)
@@ -153,6 +211,12 @@ class EdgeList
     each { |edge| graph.add_edge(*edge) }
     graph
   end
+
+  def to_disjoint_sets
+    sets = DisjointSets.new(order)
+    each { |edge| sets.union(*edge) }
+    sets
+  end
 end
 
 def read_edges(io = ARGF)
@@ -176,6 +240,8 @@ puts "Got #{edges.order} vertices and #{edges.size} edges. The edges are:"
 edges.each { |edge| pp edge }
 puts
 
+# FIXME: Factor out the repetition in the following stanzas.
+
 graph = edges.to_graph
 
 dfs_rec = graph.components_by_dfs_rec
@@ -193,8 +259,13 @@ puts "Found #{regular_pluralize(bfs.size, "component")} by BFS:"
 bfs.each { |component| pp component }
 puts
 
-if dfs_rec == dfs_iter == bfs
-  puts "I'm happy to say those results are the same."
+uf = edges.to_disjoint_sets.components
+puts "Found #{regular_pluralize(uf.size, "component")} by union-find:"
+uf.each { |component| pp component }
+puts
+
+if dfs_rec == dfs_iter == bfs == uf
+  puts "I'm happy to say those results are all the same."
 else
-  puts "Oh NO! Those results are NOT the same! :("
+  puts "Oh NO! Those results are NOT all the same! :("
 end
