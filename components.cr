@@ -44,7 +44,7 @@ class Graph
       @adj[src].each { |dest| dfs.call(dest, action) }
     end
 
-    (0...order).each do |start|
+    each_vertex do |start|
       out = [] of Int32
       dfs.call(start, vertex_consumer { |vertex| out << vertex })
       components << out.sort! unless out.empty?
@@ -76,7 +76,17 @@ class Graph
       out.sort!
     end
 
-    (0...order).each.reject { |start| vis[start] }.map(&dfs).to_a
+    each_vertex.reject { |start| vis[start] }.map(&dfs).to_a
+  end
+
+  # Call a block for each vertex.
+  private def each_vertex(&block)
+    (0...order).each { |vertex| yield vertex }
+  end
+
+  # Lazy sequence of vertices.
+  private def each_vertex
+    (0...order).each
   end
 end
 
