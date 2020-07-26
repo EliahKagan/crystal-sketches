@@ -1,0 +1,13 @@
+#!/bin/sh
+
+paste -d' ' /dev/fd/3 /dev/fd/4 3<<'EOF' 4<<'EOF'
+'Twas brillig, and
+Did gyre and
+All mimsy were
+And the
+EOF
+the slithy toves
+gimble in the wabe
+the borogroves,
+mome raths outgrabe.
+EOF
