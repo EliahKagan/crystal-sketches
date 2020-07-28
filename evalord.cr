@@ -50,3 +50,10 @@ puts "u starts as #{u}."
 puts "Assignments are evaluated from right to left:"
 u.x = u.y = u.z = passthrough(50)
 puts "Now u is #{u}."
+puts "Increasing..."
+u.y += 1
+u.z += u.x
+puts "Now u is #{u}."
+puts "Rotating..."
+u.x, u.y, u.z = u.y, u.z, u.x
+puts "Now u is #{u}."
