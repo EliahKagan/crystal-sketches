@@ -40,8 +40,13 @@ class NoisyTriple(TX, TY, TZ)
   end
 end
 
+def passthrough(value)
+  puts "Passing through #{value}."
+  value
+end
+
 u = NoisyTriple(Int32, Int32, Int32).new(10, 20, 30)
 puts "u starts as #{u}."
 puts "Assignments are evaluated from right to left:"
-u.x = u.y = u.z = 50
+u.x = u.y = u.z = passthrough(50)
 puts "Now u is #{u}."
