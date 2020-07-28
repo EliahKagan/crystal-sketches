@@ -47,13 +47,25 @@ end
 
 u = NoisyTriple(Int32, Int32, Int32).new(10, 20, 30)
 puts "u starts as #{u}."
+
+puts
 puts "Assignments are evaluated from right to left:"
 u.x = u.y = u.z = passthrough(50)
 puts "Now u is #{u}."
+
+puts
 puts "Increasing..."
 u.y += 1
 u.z += u.x
 puts "Now u is #{u}."
+
+puts
 puts "Rotating..."
 u.x, u.y, u.z = u.y, u.z, u.x
 puts "Now u is #{u}."
+
+puts
+a, b = [10], 20
+puts "a = #{a}, b = #{b}"
+b, a[b] = 0, 30
+puts "a = #{a}, b = #{b}"
