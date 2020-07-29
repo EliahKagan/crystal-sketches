@@ -29,7 +29,7 @@ end
 def test(base, exponent, label, &block)
   result = nil
   elapsed = Time.measure { result = yield base, exponent }
-  printf "%-4s:  %10d  %s\n", label, result, elapsed
+  printf "%-4s:  %d  %s\n", label, result, elapsed
 end
 
 def test_all(base, exponent)
@@ -38,6 +38,32 @@ def test_all(base, exponent)
   test(base, exponent, "gow") { |b, e| b.gow(e) }
 end
 
-THREE = BigInt.new(3)
+def die(message)
+  STDERR.puts "#{PROGRAM_NAME}: error: #{message}"
+  exit 1
+end
 
-test_all(THREE, 100)
+EXAMPLE_BASE = 3
+EXAMPLE_EXPONENT = 100
+
+if ARGV.empty?
+  puts "No arguments. Showing #{EXAMPLE_BASE} to the #{EXAMPLE_EXPONENT}."
+  test_all(BigInt.new(EXAMPLE_BASE), EXAMPLE_EXPONENT)
+  exit 0
+end
+
+die("too few arguments") if ARGV.size < 2
+die("too many arguments") if ARGV.size > 2
+
+# FIXME: Report parsing errors rather than crashing.
+
+begin
+  base = BigInt.new(ARGV[0])
+end
+
+begin
+  exponent = Int32.new(ARGV[1])
+end
+
+puts "Computing #{base} to the #{exponent}."
+test_all(base, exponent)
