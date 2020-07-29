@@ -3,5 +3,8 @@
 
 $VERBOSE = 1
 
-ARGV.each { |arg| last = arg }
+for arg in ARGV
+  last = arg
+end
+
 puts "#{last} (#{last.class})"
