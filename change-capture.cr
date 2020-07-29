@@ -1,5 +1,7 @@
 x = 10
-f = ->{ puts "Got #{x}, static type #{typeof(x)}." }
+puts "Have #{x}, static type #{typeof(x)}."
+f = ->{ puts "Captured #{x}, static type #{typeof(x)}." }
 f.call
 x = "foo"
+puts "Have #{x}, static type #{typeof(x)}."
 f.call
