@@ -34,11 +34,15 @@ def test(base, exponent, label, &block)
   result
 end
 
-# Tests all three exponentiation implementations.
+# Tests all three exponentiation implementations, and compares their results.
 def test_all(base, exponent)
-  test(base, exponent, "**") { |b, e| b**e }
-  test(base, exponent, "bow") { |b, e| b.bow(e) }
-  test(base, exponent, "gow") { |b, e| b.gow(e) }
+  by_std = test(base, exponent, "**") { |b, e| b**e }
+  by_bow = test(base, exponent, "bow") { |b, e| b.bow(e) }
+  by_gow = test(base, exponent, "gow") { |b, e| b.gow(e) }
+
+  unless by_std == by_bow == by_gow
+    STDERR.puts "#{PROGRAM_NAME}: warning: the results differ!"
+  end
 end
 
 # Print a error message and exit, indicating failure.
