@@ -1,5 +1,5 @@
 iterator = ARGV.each
-while (item = iterator.next) != Iterator::Stop
+while (item = iterator.next).is_a?(String)
   last = item
 end
 
