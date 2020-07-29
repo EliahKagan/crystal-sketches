@@ -1,15 +1,19 @@
 # Creates a proc that, when called, prints a value and its type.
-def make_printer(x)
-  ->do
-    puts "Value #{x}, #{typeof(x)} (static), #{x.class} (dynamic). [In proc.]"
+def f(n : Int32?)
+  if n.nil?
+    puts "Got nil."
+    ->{ puts "No capture." }
+  else
+    puts "Got #{typeof(n)}."
+    ->{ puts "Captured #{typeof(n)}." }
   end
 end
 
-x = gets
-puts "Value #{x}, #{typeof(x)} (static), #{x.class} (dynamic)."
-exit if x.nil?
-puts "Value #{x}, #{typeof(x)} (static), #{x.class} (dynamic)."
-f = make_printer(x)
-puts "Value #{x}, #{typeof(x)} (static), #{x.class} (dynamic)."
-f.call
-puts "Value #{x}, #{typeof(x)} (static), #{x.class} (dynamic)."
+if ARGV.empty?
+  puts "You must pass an argument."
+  exit 1
+end
+
+n = ARGV[0].to_i?
+g = f(n)
+g.call
