@@ -1,7 +1,7 @@
 require "big"
 
-# Extends Int with bad and (fairly) good recursive exponentiation.
-struct Int # FIXME: Extend Number instead, if possible.
+# Extends Number with bad and (fairly) good recursive exponentiation.
+struct Number
   # Bad power function. Not likely to overflow the stack though...
   def bow(exponent : Int)
     raise ArgumentError.new("negative exponent unsupported") if exponent < 0
@@ -26,18 +26,22 @@ struct Int # FIXME: Extend Number instead, if possible.
   end
 end
 
+# Performs a binary operation, reports timings, and returns the result.
 def test(base, exponent, label, &block)
   result = nil
   elapsed = Time.measure { result = yield base, exponent }
   printf "%-4s:  %s  %s\n", label, result, elapsed
+  result
 end
 
+# Tests all three exponentiation implementations.
 def test_all(base, exponent)
   test(base, exponent, "**") { |b, e| b**e }
   test(base, exponent, "bow") { |b, e| b.bow(e) }
   test(base, exponent, "gow") { |b, e| b.gow(e) }
 end
 
+# Print a error message and exit, indicating failure.
 def die(message)
   STDERR.puts "#{PROGRAM_NAME}: error: #{message}"
   exit 1
