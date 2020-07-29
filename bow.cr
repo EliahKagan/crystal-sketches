@@ -29,7 +29,7 @@ end
 def test(base, exponent, label, &block)
   result = nil
   elapsed = Time.measure { result = yield base, exponent }
-  printf "%-4s:  %d  %s\n", label, result, elapsed
+  printf "%-4s:  %s  %s\n", label, result, elapsed
 end
 
 def test_all(base, exponent)
