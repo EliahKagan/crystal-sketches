@@ -55,14 +55,16 @@ end
 die("too few arguments") if ARGV.size < 2
 die("too many arguments") if ARGV.size > 2
 
-# FIXME: Report parsing errors rather than crashing.
-
 begin
   base = BigInt.new(ARGV[0])
+rescue error : ArgumentError
+  die("bad base: #{error}")
 end
 
 begin
   exponent = Int32.new(ARGV[1])
+rescue error : ArgumentError
+  die("bad exponent: #{error}")
 end
 
 puts "Computing #{base} to the #{exponent}."
