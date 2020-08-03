@@ -1,6 +1,4 @@
-def add(x : T, y : U) forall T, U
-  puts "x : #{T}"
-  puts "y : #{U}"
+def add(x : T, y : T) forall T
   x + y
 end
 
