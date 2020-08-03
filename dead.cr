@@ -1,9 +1,8 @@
 x = 10
 
 if false
-  p typeof(x)
   x = "hello"
-  p typeof(x)
+  p x + 1
 end
 
 p typeof(x)
