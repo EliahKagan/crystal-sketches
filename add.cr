@@ -1,6 +1,4 @@
-def add(x, y)
-  puts "x : #{typeof(x)}"
-  puts "y : #{typeof(y)}"
+def add(x : T, y : U) forall T, U
   x + y
 end
 
