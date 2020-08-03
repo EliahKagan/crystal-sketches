@@ -11,3 +11,7 @@
 
 # Ignore editor tempfiles.
 .*.swp
+
+# Ignore compile Python bytecode.
+# (This repo has some code in other languages, for comparison to Crystal.)
+__pycache__/
