@@ -1,3 +1,9 @@
 x = 10
-x = "hello" if false
+
+if false
+  p typeof(x)
+  x = "hello"
+  p typeof(x)
+end
+
 p typeof(x)
