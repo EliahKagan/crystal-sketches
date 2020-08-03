@@ -1,4 +1,6 @@
 def add(x, y)
+  puts "x : #{typeof(x)}"
+  puts "y : #{typeof(y)}"
   x + y
 end
 
