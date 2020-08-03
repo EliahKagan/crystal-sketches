@@ -1,8 +1,4 @@
-def add_(x : Int32, y : Int32)
-  x + y
-end
-
-def add(x : Float64, y : Float64)
+def add(x, y)
   x + y
 end
 
