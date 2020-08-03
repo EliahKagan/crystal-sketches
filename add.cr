@@ -1,4 +1,6 @@
 def add(x : T, y : U) forall T, U
+  puts "x : #{T}"
+  puts "y : #{U}"
   x + y
 end
 
