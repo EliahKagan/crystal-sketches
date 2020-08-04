@@ -18,7 +18,7 @@ class Climber
   property tree : Pine | Maple
 
   def initialize(@tree)
-    copy = tree
+    copy = @tree
     climb copy
   end
 end
