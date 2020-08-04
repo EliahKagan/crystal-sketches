@@ -15,7 +15,7 @@ def climb(tree : Pine | Maple)
 end
 
 class Climber
-  getter tree : Pine | Maple
+  property tree : Pine | Maple
 
   def initialize(@tree)
     copy = tree
