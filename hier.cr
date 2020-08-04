@@ -11,12 +11,14 @@ class Willow < Tree
 end
 
 def climb(tree : Pine | Maple)
+  puts "Climbing #{tree}."
 end
 
 class Climber
   getter tree : Pine | Maple
 
   def initialize(@tree)
+    climb @tree
   end
 end
 
