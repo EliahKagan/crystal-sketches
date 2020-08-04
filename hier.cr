@@ -16,4 +16,4 @@ end
 # climb Willow.new
 p Pine | Maple
 p Pine | Maple == Tree
-p Pine | Maple == Pine | Willow == Maple | Willow == (Tree+)
+p Pine | Maple == Pine | Willow == Maple | Willow
