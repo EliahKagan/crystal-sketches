@@ -13,5 +13,12 @@ end
 def climb(tree : Pine | Maple)
 end
 
-x = true ? Pine.new : Maple.new
-p typeof(x)
+class Climber
+  getter tree : Pine | Maple
+
+  def initialize(@tree)
+  end
+end
+
+climber = Climber.new(Pine.new)
+pp climber.tree
