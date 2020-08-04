@@ -6,25 +6,25 @@ class Array(T)
   end
 
   # Recursive top-down mergesort with a specified less-than comparison.
-  def mergesort(&block)
-    mergesort_subarray(Array(T).new(size), 0, size) { |ls, rs| yield ls < rs }
+  def mergesort(&block : T, T -> U) forall U
+    mergesort_subarray(Array(T).new(size), 0, size, &block)
   end
 
-  private def mergesort_subarray(aux, low, high, &block)
+  private def mergesort_subarray(aux, low, high, &block : T, T -> U) forall U
     length = high - low
     return if length < 2
 
     mid = low + length // 2
-    mergesort_subarray(aux, low, mid) { |ls, rs| yield ls, rs }
-    mergesort_subarray(aux, mid, high) { |ls, rs| yield ls, rs }
-    merge(aux, low, mid, high) { |ls, rs| yield ls, rs }
+    mergesort_subarray(aux, low, mid, &block)
+    mergesort_subarray(aux, mid, high, &block)
+    merge(aux, low, mid, high, &block)
   end
 
-  private def merge(aux, low, mid, high, &block)
+  private def merge(aux, low, mid, high, &block : T, T -> U) forall U
     left = low
     right = mid
     while left < mid && right < high
-      if yield self[right], self[left]
+      if block.call(self[right], self[left])
         aux << self[right]
         right += 1
       else 
