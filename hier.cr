@@ -7,8 +7,8 @@ end
 class Maple < Tree
 end
 
-# class Willow < Tree
-# end
+class Willow < Tree
+end
 
 def climb(tree : Pine | Maple)
   puts "Climbing #{tree}."
