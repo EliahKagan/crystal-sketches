@@ -22,7 +22,26 @@ class Array(T)
 
   # Insertion sort with a specified key selector.
   def insertionsort_by(&block)
-    insertionsort { |ls, rs| yield ls < yield rs }
+    insertionsort { |ls, rs| yield(ls) < yield(rs) }
+  end
+
+  # Seletion sort with < comparison.
+  def selectionsort
+    selectionsort { |ls, rs| ls < rs }
+  end
+
+  # Selection sort with a specified less-than comparison.
+  def selectionsort(&block)
+    (size - 1).downto(1) do |right|
+      acc = 0
+      1.upto(right) { |left| acc = left if yield self[acc], self[left] }
+      swap(acc, right)
+    end
+  end
+
+  # Selection sort with a specified key selector.
+  def selectionsort_by(&block)
+    selectionsort { |ls, rs| yield(ls) < yield(rs) }
   end
 
   # Recursive top-down mergesort with < comparison.
@@ -77,6 +96,8 @@ end
 a = (0..20).to_a
 a.shuffle!
 a2 = a.dup
+a3 = a.dup
+
 pp a
 a.mergesort
 pp a
@@ -87,8 +108,15 @@ a2.insertionsort
 pp a2
 
 puts
+pp a3
+a3.selectionsort
+pp a3
+
+puts
 b = %w[foo bar baz quux foobar ham spam eggs speggs]
 b2 = b.dup
+b3 = b.dup
+
 pp b
 b.mergesort
 pp b
@@ -97,7 +125,14 @@ pp b
 
 puts
 pp b2
-b2.mergesort
+b2.insertionsort
 pp b2
-b2.mergesort_by &.size
+b2.insertionsort_by &.size
 pp b2
+
+puts
+pp b3
+b3.selectionsort
+pp b3
+b3.selectionsort_by &.size
+pp b3
