@@ -1,5 +1,30 @@
 # Various sorting algorithms for arrays.
 class Array(T)
+  # Insertion sort with < comparison.
+  def insertionsort
+    insertionsort { |ls, rs| ls < rs }
+  end
+
+  # Insertion sort with a specified less-than comparison.
+  def insertionsort(&block)
+    1.upto(size - 1) do |right|
+      elem = self[right]
+
+      left = right
+      while left > 0 && yield elem, self[left - 1]
+        self[left] = self[left - 1]
+        left -= 1
+      end
+
+      self[left] = elem
+    end
+  end
+
+  # Insertion sort with a specified key selector.
+  def insertionsort_by(&block)
+    insertionsort { |ls, rs| yield ls < yield rs }
+  end
+
   # Recursive top-down mergesort with < comparison.
   def mergesort
     mergesort { |ls, rs| ls < rs }
@@ -51,13 +76,28 @@ end
 
 a = (0..20).to_a
 a.shuffle!
+a2 = a.dup
 pp a
 a.mergesort
 pp a
 
+puts
+pp a2
+a2.insertionsort
+pp a2
+
+puts
 b = %w[foo bar baz quux foobar ham spam eggs speggs]
+b2 = b.dup
 pp b
 b.mergesort
 pp b
 b.mergesort_by &.size
 pp b
+
+puts
+pp b2
+b2.mergesort
+pp b2
+b2.mergesort_by &.size
+pp b2
