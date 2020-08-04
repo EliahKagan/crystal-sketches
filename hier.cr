@@ -23,5 +23,6 @@ class Climber
   end
 end
 
-climber = Climber.new(Pine.new)
+tree = Pine.new
+climber = Climber.new(tree)
 pp climber.tree
