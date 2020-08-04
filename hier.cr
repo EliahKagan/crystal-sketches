@@ -18,7 +18,8 @@ class Climber
   getter tree : Pine | Maple
 
   def initialize(@tree)
-    climb @tree
+    copy = tree
+    climb copy
   end
 end
 
