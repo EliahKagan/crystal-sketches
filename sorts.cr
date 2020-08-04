@@ -6,8 +6,13 @@ class Array(T)
   end
 
   # Recursive top-down mergesort with a specified less-than comparison.
-  def mergesort(&block : T, T -> U) forall U
+  def mergesort(&block : T, T -> B) forall B
     mergesort_subarray(Array(T).new(size), 0, size, &block)
+  end
+
+  # Recursive top-down mergesort with a specified key selector.
+  def mergesort_by(&block : T -> K) forall K
+    mergesort { |ls, rs| block.call(ls) < block.call(rs) }
   end
 
   private def mergesort_subarray(aux, low, high, &block : T, T -> U) forall U
@@ -49,3 +54,10 @@ a.shuffle!
 pp a
 a.mergesort
 pp a
+
+b = %w[foo bar baz quux foobar ham spam eggs speggs]
+pp b
+b.mergesort
+pp b
+b.mergesort_by &.size
+pp b
