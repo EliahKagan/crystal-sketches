@@ -11,7 +11,7 @@ class Array(T)
       elem = self[right]
 
       left = right
-      while left > 0 && yield elem, self[left - 1]
+      while left > 0 && yield(elem, self[left - 1])
         self[left] = self[left - 1]
         left -= 1
       end
@@ -34,7 +34,7 @@ class Array(T)
   def selectionsort(&block)
     (size - 1).downto(1) do |right|
       acc = 0
-      1.upto(right) { |left| acc = left if yield self[acc], self[left] }
+      1.upto(right) { |left| acc = left if yield(self[acc], self[left]) }
       swap(acc, right)
     end
   end
@@ -91,48 +91,122 @@ class Array(T)
     self[low...right] = aux
     aux.clear
   end
+
+  # Heapsort with < comparison.
+  def heapsort
+    heapsort { |ls, rs| ls < rs }
+  end
+
+  # Heapsort with a specified less-than comparison.
+  def heapsort(&block)
+    return if size < 2
+
+    maxheapify { |ls, rs| yield(ls, rs) }
+
+    size.downto(2) do |heap_size|
+      maxheap_pop_inplace(heap_size) { |ls, rs| yield(ls, rs) }
+    end
+  end
+
+  # Heapsort with a specified key selector.
+  def heapsort_by(&block)
+    heapsort { |ls, rs| yield(ls) < yield(rs) }
+  end
+
+  private def maxheapify(&block)
+    (size // 2 - 1).downto(0) do |parent|
+      maxheap_sift_down(parent, size) { |ls, rs| yield(ls, rs) }
+    end
+  end
+
+  private def maxheap_pop_inplace(heap_size, &block)
+    swap(0, heap_size - 1)
+    maxheap_sift_down(0, heap_size - 1) { |ls, rs| yield(ls, rs) }
+  end
+
+  private def maxheap_sift_down(parent, heap_size, &block)
+    elem = self[parent]
+
+    loop do
+      child = maxheap_pick_child(parent, heap_size) { |ls, rs| yield(ls, rs) }
+      break unless child && yield(elem, self[child])
+      self[parent] = self[child]
+      parent = child
+    end
+
+    self[parent] = elem
+  end
+
+  private def maxheap_pick_child(parent, heap_size, &block)
+    left = parent * 2 + 1
+    return nil if left >= heap_size
+    right = left + 1
+    right == heap_size || yield(self[right], self[left]) ? left : right
+  end
 end
 
 a = (0..20).to_a
 a.shuffle!
 a2 = a.dup
 a3 = a.dup
+a4 = a.dup
 
+puts "Merge sort:"
 pp a
 a.mergesort
 pp a
-
 puts
+
+puts "Insertion sort:"
 pp a2
 a2.insertionsort
 pp a2
-
 puts
+
+puts "Selection sort:"
 pp a3
 a3.selectionsort
 pp a3
-
 puts
+
+puts "Heap sort:"
+pp a4
+a4.heapsort
+pp a4
+puts
+
 b = %w[foo bar baz quux foobar ham spam eggs speggs]
 b2 = b.dup
 b3 = b.dup
+b4 = b.dup
 
+puts "Merge sort:"
 pp b
 b.mergesort
 pp b
 b.mergesort_by &.size
 pp b
-
 puts
+
+puts "Insertion sort:"
 pp b2
 b2.insertionsort
 pp b2
 b2.insertionsort_by &.size
 pp b2
-
 puts
+
+puts "Selection sort:"
 pp b3
 b3.selectionsort
 pp b3
 b3.selectionsort_by &.size
 pp b3
+puts
+
+puts "Heap sort:"
+pp b4
+b4.heapsort
+pp b4
+b4.heapsort_by &.size
+pp b4
