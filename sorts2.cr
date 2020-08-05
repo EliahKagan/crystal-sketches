@@ -1,17 +1,17 @@
 # Various sorting algorithms for arrays.
 class Array(T)
-  # Insertion sort with < comparison.
+  # Insertion sort with <=> comparison.
   def insertionsort
-    insertionsort { |ls, rs| ls < rs }
+    insertionsort { |ls, rs| ls <=> rs }
   end
 
-  # Insertion sort with a specified less-than comparison.
+  # Insertion sort with a specified <=>-like comparison.
   def insertionsort(&block)
     1.upto(size - 1) do |right|
       elem = self[right]
 
       left = right
-      while left > 0 && yield(elem, self[left - 1])
+      while left > 0 && yield(elem, self[left - 1]) < 0
         self[left] = self[left - 1]
         left -= 1
       end
@@ -22,41 +22,41 @@ class Array(T)
 
   # Insertion sort with a specified key selector.
   def insertionsort_by(&block)
-    insertionsort { |ls, rs| yield(ls) < yield(rs) }
+    insertionsort { |ls, rs| yield(ls) <=> yield(rs) }
   end
 
-  # Seletion sort with < comparison.
+  # Seletion sort with <=> comparison.
   def selectionsort
-    selectionsort { |ls, rs| ls < rs }
+    selectionsort { |ls, rs| ls <=> rs }
   end
 
-  # Selection sort with a specified less-than comparison.
+  # Selection sort with a specified <=>-like comparison.
   def selectionsort(&block)
     (size - 1).downto(1) do |right|
       acc = 0
-      1.upto(right) { |left| acc = left if yield(self[acc], self[left]) }
+      1.upto(right) { |left| acc = left if yield(self[acc], self[left]) < 0 }
       swap(acc, right)
     end
   end
 
   # Selection sort with a specified key selector.
   def selectionsort_by(&block)
-    selectionsort { |ls, rs| yield(ls) < yield(rs) }
+    selectionsort { |ls, rs| yield(ls) <=> yield(rs) }
   end
 
-  # Recursive top-down mergesort with < comparison.
+  # Recursive top-down mergesort with <=> comparison.
   def mergesort
-    mergesort { |ls, rs| ls < rs }
+    mergesort { |ls, rs| ls <=> rs }
   end
 
-  # Recursive top-down mergesort with a specified less-than comparison.
+  # Recursive top-down mergesort with a specified <=>-like comparison.
   def mergesort(&block : T, T -> B) forall B
     mergesort_subarray(Array(T).new(size), 0, size, &block)
   end
 
   # Recursive top-down mergesort with a specified key selector.
   def mergesort_by(&block : T -> K) forall K
-    mergesort { |ls, rs| block.call(ls) < block.call(rs) }
+    mergesort { |ls, rs| block.call(ls) <=> block.call(rs) }
   end
 
   private def mergesort_subarray(aux, low, high, &block : T, T -> U) forall U
@@ -73,10 +73,10 @@ class Array(T)
     left = low
     right = mid
     while left < mid && right < high
-      if block.call(self[right], self[left])
+      if block.call(self[right], self[left]) < 0
         aux << self[right]
         right += 1
-      else 
+      else
         aux << self[left]
         left += 1
       end
@@ -92,12 +92,12 @@ class Array(T)
     aux.clear
   end
 
-  # Heapsort with < comparison.
+  # Heapsort with <=> comparison.
   def heapsort
-    heapsort { |ls, rs| ls < rs }
+    heapsort { |ls, rs| ls <=> rs }
   end
 
-  # Heapsort with a specified less-than comparison.
+  # Heapsort with a specified <=>-like comparison.
   def heapsort(&block)
     return if size < 2
 
@@ -110,7 +110,7 @@ class Array(T)
 
   # Heapsort with a specified key selector.
   def heapsort_by(&block)
-    heapsort { |ls, rs| yield(ls) < yield(rs) }
+    heapsort { |ls, rs| yield(ls) <=> yield(rs) }
   end
 
   private def maxheapify(&block)
@@ -129,7 +129,7 @@ class Array(T)
 
     loop do
       child = maxheap_pick_child(parent, heap_size) { |ls, rs| yield(ls, rs) }
-      break unless child && yield(elem, self[child])
+      break unless child && yield(elem, self[child]) < 0
       self[parent] = self[child]
       parent = child
     end
@@ -141,22 +141,22 @@ class Array(T)
     left = parent * 2 + 1
     return nil if left >= heap_size
     right = left + 1
-    right == heap_size || yield(self[right], self[left]) ? left : right
+    right == heap_size || yield(self[right], self[left]) < 0 ? left : right
   end
 
-  # Quicksort with < comparison.
+  # Quicksort with <=> comparison.
   def quicksort
-    quicksort { |ls, rs| ls < rs }
+    quicksort { |ls, rs| ls <=> rs }
   end
 
-  # Quicksort with a specified less-than comparison.
+  # Quicksort with a specified <=>-like comparison.
   def quicksort(&block : T, T -> B) forall B
     quicksort_subarray(0, size, &block)
   end
 
   # Quicksort with a specified key selector.
   def quicksort_by(&block : T -> K) forall K
-    quicksort { |ls, rs| block.call(ls) < block.call(rs) }
+    quicksort { |ls, rs| block.call(ls) <=> block.call(rs) }
   end
 
   private def quicksort_subarray(low, high, &block : T, T -> B) forall B
@@ -172,7 +172,7 @@ class Array(T)
 
     left = low
     (low + 1).upto(high - 1) do |right|
-      swap(left += 1, right) if yield(self[right], pivot)
+      swap(left += 1, right) if yield(self[right], pivot) < 0
     end
 
     swap(low, left)
