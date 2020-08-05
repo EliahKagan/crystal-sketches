@@ -27,11 +27,6 @@ class String
   protected def each_non_ws_char
     each_char.reject(&.whitespace?).map(&.downcase)
   end
-
-  # Performs an action on each non-whitespace character, with case folding.
-  protected def each_non_ws_char
-    each_non_ws_char.each { |ch| yield ch }
-  end
 end
 
 # The strategy used to compare strings to determine if they are anagrams.
