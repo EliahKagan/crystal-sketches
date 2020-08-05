@@ -20,10 +20,7 @@ class String
   # Tells if this is an anagram of another string, ignoring whitespace.
   # Uses hashing.
   def anagram_by_hash?(other)
-    freqs = Hash(Char, Int32).new(0)
-    each_non_ws_char { |ch| freqs[ch] += 1 }
-    other.each_non_ws_char { |ch| freqs[ch] -= 1 }
-    freqs.values.all? &.zero?
+    each_non_ws_char.tally == other.each_non_ws_char.tally
   end
 
   # Gets a sequence of the non-whitespace characters, with case folding.
