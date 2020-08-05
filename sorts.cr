@@ -143,6 +143,41 @@ class Array(T)
     right = left + 1
     right == heap_size || yield(self[right], self[left]) ? left : right
   end
+
+  # Quicksort with < comparison.
+  def quicksort
+    quicksort { |ls, rs| ls < rs }
+  end
+
+  # Quicksort with a specified less-than comparison.
+  def quicksort(&block : T, T -> B) forall B
+    quicksort_subarray(0, size, &block)
+  end
+
+  # Quicksort with a specified key selector.
+  def quicksort_by(&block : T -> K) forall K
+    quicksort { |ls, rs| block.call(ls) < block.call(rs) }
+  end
+
+  private def quicksort_subarray(low, high, &block : T, T -> B) forall B
+    return if high - low < 2
+    mid = lomuto_partition(low, high, &block)
+    quicksort_subarray(low, mid, &block)
+    quicksort_subarray(mid + 1, high, &block)
+  end
+
+  private def lomuto_partition(low, high, &block : T, T -> B) forall B
+    swap(low, low + (high - low) // 2)
+    pivot = self[low]
+
+    left = low
+    (low + 1).upto(high - 1) do |right|
+      swap(left += 1, right) if yield(self[right], pivot)
+    end
+
+    swap(low, left)
+    left
+  end
 end
 
 a = (0..20).to_a
@@ -150,6 +185,7 @@ a.shuffle!
 a2 = a.dup
 a3 = a.dup
 a4 = a.dup
+a5 = a.dup
 
 puts "Merge sort:"
 pp a
@@ -175,10 +211,17 @@ a4.heapsort
 pp a4
 puts
 
+puts "Quicksort:"
+pp a5
+a5.quicksort
+pp a5
+puts
+
 b = %w[foo bar baz quux foobar ham spam eggs speggs]
 b2 = b.dup
 b3 = b.dup
 b4 = b.dup
+b5 = b.dup
 
 puts "Merge sort:"
 pp b
@@ -210,3 +253,11 @@ b4.heapsort
 pp b4
 b4.heapsort_by &.size
 pp b4
+puts
+
+puts "Quicksort:"
+pp b5
+b5.quicksort
+pp b5
+b5.quicksort_by &.size
+pp b5
