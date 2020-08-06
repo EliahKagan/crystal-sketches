@@ -148,32 +148,33 @@ class Array(T)
 
   # Quicksort with a specified <=>-like comparison.
   def quicksort(&block : T, T -> I) forall I
-    quicksort_subarray(0, size, &block)
+    lomuto_partition = ->(low : Int32, high : Int32) do
+      swap(low, low + (high - low) // 2)
+      pivot = self[low]
+
+      left = low
+      (low + 1).upto(high - 1) do |right|
+        swap(left += 1, right) if block.call(self[right], pivot) < 0
+      end
+
+      swap(low, left)
+      left
+    end
+
+    quicksort_subarray = ->(low : Int32, high : Int32) { }
+    quicksort_subarray = ->(low : Int32, high : Int32) do
+      return if high - low < 2
+      mid = lomuto_partition.call(low, high)
+      quicksort_subarray.call(low, mid)
+      quicksort_subarray.call(mid + 1, high)
+    end
+
+    quicksort_subarray.call(0, size)
   end
 
   # Quicksort with a specified key selector.
   def quicksort_by(&block : T -> K) forall K
     quicksort { |ls, rs| block.call(ls) <=> block.call(rs) }
-  end
-
-  private def quicksort_subarray(low, high, &block : T, T -> I) forall I
-    return if high - low < 2
-    mid = lomuto_partition(low, high, &block)
-    quicksort_subarray(low, mid, &block)
-    quicksort_subarray(mid + 1, high, &block)
-  end
-
-  private def lomuto_partition(low, high, &block : T, T -> I) forall I
-    swap(low, low + (high - low) // 2)
-    pivot = self[low]
-
-    left = low
-    (low + 1).upto(high - 1) do |right|
-      swap(left += 1, right) if yield(self[right], pivot) < 0
-    end
-
-    swap(low, left)
-    left
   end
 end
 
