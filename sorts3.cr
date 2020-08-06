@@ -91,7 +91,7 @@ class Array(T)
   end
 
   # Recursive top-down mergesort with a specified key selector.
-  def mergesort_by(&block : T -> U) forall U
+  def mergesort_by(&block : T -> K) forall K
     mergesort { |ls, rs| block.call(ls) <=> block.call(rs) }
   end
 
@@ -101,50 +101,44 @@ class Array(T)
   end
 
   # Heapsort with a specified <=>-like comparison.
-  def heapsort(&block)
-    return if size < 2
+  def heapsort(&block : T, T -> I) forall I
+    heap_size = size
+    return if heap_size < 2
 
-    maxheapify { |ls, rs| yield(ls, rs) }
+    pick_child = ->(parent : Int32) do
+      left = parent * 2 + 1
+      return nil if left >= heap_size
 
-    size.downto(2) do |heap_size|
-      maxheap_pop_inplace(heap_size) { |ls, rs| yield(ls, rs) }
+      right = left + 1
+      if right == heap_size || block.call(self[right], self[left]) < 0
+        left
+      else
+        right
+      end
+    end
+
+    sift_down = ->(parent : Int32) do
+      loop do
+        child = pick_child.call(parent)
+        break unless child && block.call(self[parent], self[child]) < 0
+        swap(parent, child)
+        parent = child
+      end
+    end
+
+    # Convert the array into a maxheap.
+    (heap_size // 2 - 1).downto(0, &sift_down)
+
+    # Pop each item to the end of the heap.
+    while (heap_size -= 1) > 0
+      swap(0, heap_size)
+      sift_down.call(0)
     end
   end
 
   # Heapsort with a specified key selector.
-  def heapsort_by(&block)
-    heapsort { |ls, rs| yield(ls) <=> yield(rs) }
-  end
-
-  private def maxheapify(&block)
-    (size // 2 - 1).downto(0) do |parent|
-      maxheap_sift_down(parent, size) { |ls, rs| yield(ls, rs) }
-    end
-  end
-
-  private def maxheap_pop_inplace(heap_size, &block)
-    swap(0, heap_size - 1)
-    maxheap_sift_down(0, heap_size - 1) { |ls, rs| yield(ls, rs) }
-  end
-
-  private def maxheap_sift_down(parent, heap_size, &block)
-    elem = self[parent]
-
-    loop do
-      child = maxheap_pick_child(parent, heap_size) { |ls, rs| yield(ls, rs) }
-      break unless child && yield(elem, self[child]) < 0
-      self[parent] = self[child]
-      parent = child
-    end
-
-    self[parent] = elem
-  end
-
-  private def maxheap_pick_child(parent, heap_size, &block)
-    left = parent * 2 + 1
-    return nil if left >= heap_size
-    right = left + 1
-    right == heap_size || yield(self[right], self[left]) < 0 ? left : right
+  def heapsort_by(&block : T -> K) forall K
+    heapsort { |ls, rs| block.call(ls) <=> block.call(rs) }
   end
 
   # Quicksort with <=> comparison.
