@@ -8,15 +8,11 @@ class Array(T)
   # Insertion sort with a specified <=>-like comparison.
   def insertionsort(&block)
     1.upto(size - 1) do |right|
-      elem = self[right]
-
       left = right
-      while left > 0 && yield(elem, self[left - 1]) < 0
-        self[left] = self[left - 1]
+      while left > 0 && yield(self[left], self[left - 1]) < 0
+        swap(left, left - 1)
         left -= 1
       end
-
-      self[left] = elem
     end
   end
 
