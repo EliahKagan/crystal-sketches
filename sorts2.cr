@@ -50,7 +50,7 @@ class Array(T)
   end
 
   # Recursive top-down mergesort with a specified <=>-like comparison.
-  def mergesort(&block : T, T -> B) forall B
+  def mergesort(&block : T, T -> I) forall I
     mergesort_subarray(Array(T).new(size), 0, size, &block)
   end
 
@@ -150,7 +150,7 @@ class Array(T)
   end
 
   # Quicksort with a specified <=>-like comparison.
-  def quicksort(&block : T, T -> B) forall B
+  def quicksort(&block : T, T -> I) forall I
     quicksort_subarray(0, size, &block)
   end
 
@@ -159,14 +159,14 @@ class Array(T)
     quicksort { |ls, rs| block.call(ls) <=> block.call(rs) }
   end
 
-  private def quicksort_subarray(low, high, &block : T, T -> B) forall B
+  private def quicksort_subarray(low, high, &block : T, T -> I) forall I
     return if high - low < 2
     mid = lomuto_partition(low, high, &block)
     quicksort_subarray(low, mid, &block)
     quicksort_subarray(mid + 1, high, &block)
   end
 
-  private def lomuto_partition(low, high, &block : T, T -> B) forall B
+  private def lomuto_partition(low, high, &block : T, T -> I) forall I
     swap(low, low + (high - low) // 2)
     pivot = self[low]
 
