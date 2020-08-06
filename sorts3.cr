@@ -50,14 +50,14 @@ class Array(T)
   end
 
   # Recursive top-down mergesort with a specified <=>-like comparison.
-  def mergesort(&block)
+  def mergesort(&block : T, T -> B) forall B
     aux = Array(T).new(size)
 
     merge = ->(low : Int32, mid : Int32, high : Int32) do
       left = low
       right = mid
       while left < mid && right < high
-        if yield(self[right], self[left]) < 0
+        if block.call(self[right], self[left]) < 0
           aux << self[right]
           right += 1
         else
@@ -91,8 +91,8 @@ class Array(T)
   end
 
   # Recursive top-down mergesort with a specified key selector.
-  def mergesort_by(&block)
-    mergesort { |ls, rs| yield(ls) <=> yield(rs) }
+  def mergesort_by(&block : T -> U) forall U
+    mergesort { |ls, rs| block.call(ls) <=> block.call(rs) }
   end
 
   # Heapsort with <=> comparison.
