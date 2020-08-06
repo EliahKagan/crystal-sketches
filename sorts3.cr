@@ -50,46 +50,49 @@ class Array(T)
   end
 
   # Recursive top-down mergesort with a specified <=>-like comparison.
-  def mergesort(&block : T, T -> B) forall B
-    mergesort_subarray(Array(T).new(size), 0, size, &block)
-  end
+  def mergesort(&block)
+    aux = Array(T).new(size)
 
-  # Recursive top-down mergesort with a specified key selector.
-  def mergesort_by(&block : T -> K) forall K
-    mergesort { |ls, rs| block.call(ls) <=> block.call(rs) }
-  end
+    merge = ->(low : Int32, mid : Int32, high : Int32) do
+      left = low
+      right = mid
+      while left < mid && right < high
+        if yield(self[right], self[left]) < 0
+          aux << self[right]
+          right += 1
+        else
+          aux << self[left]
+          left += 1
+        end
+      end
 
-  private def mergesort_subarray(aux, low, high, &block : T, T -> U) forall U
-    length = high - low
-    return if length < 2
-
-    mid = low + length // 2
-    mergesort_subarray(aux, low, mid, &block)
-    mergesort_subarray(aux, mid, high, &block)
-    merge(aux, low, mid, high, &block)
-  end
-
-  private def merge(aux, low, mid, high, &block : T, T -> U) forall U
-    left = low
-    right = mid
-    while left < mid && right < high
-      if block.call(self[right], self[left]) < 0
-        aux << self[right]
-        right += 1
-      else
+      while left < mid
         aux << self[left]
         left += 1
       end
+
+      raise "Bug: lost count in merge" unless right - low == aux.size
+      self[low...right] = aux
+      aux.clear
     end
 
-    while left < mid
-      aux << self[left]
-      left += 1
+    mergesort_subarray = ->(low : Int32, high : Int32) { }
+    mergesort_subarray = ->(low : Int32, high : Int32) do
+      length = high - low
+      return if length < 2
+
+      mid = low + length // 2
+      mergesort_subarray.call(low, mid)
+      mergesort_subarray.call(mid, high)
+      merge.call(low, mid, high)
     end
 
-    raise "Bug: lost count in merge" unless right - low == aux.size
-    self[low...right] = aux
-    aux.clear
+    mergesort_subarray.call(0, size)
+  end
+
+  # Recursive top-down mergesort with a specified key selector.
+  def mergesort_by(&block)
+    mergesort { |ls, rs| yield(ls) <=> yield(rs) }
   end
 
   # Heapsort with <=> comparison.
