@@ -14,6 +14,12 @@ class Dog < Animal
   end
 end
 
+class Horse < Animal
+  def talk
+    puts "Neigh!"
+  end
+end
+
 a = [] of Animal
 a << Cat.new
 a << Dog.new
@@ -22,6 +28,7 @@ a.each &.talk
 puts
 
 b = [Cat.new, Dog.new]
+b << Horse.new
 puts "#{typeof(b)} #{b.class}"
 b.each &.talk
 puts
