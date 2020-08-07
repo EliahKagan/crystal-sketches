@@ -17,4 +17,10 @@ end
 a = [] of Animal
 a << Cat.new
 a << Dog.new
+puts "#{typeof(a)} #{a.class}"
 a.each &.talk
+puts
+
+b = [Cat.new, Dog.new]
+puts "#{typeof(b)} #{b.class}"
+b.each &.talk
