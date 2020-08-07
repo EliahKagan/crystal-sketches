@@ -33,4 +33,6 @@ puts "#{typeof(b)} #{b.class}"
 b.each &.talk
 puts
 
-puts Cat | Dog
+puts "#{typeof(a)} == #{typeof(b)} == #{Array(Animal)}?  #{typeof(a) == typeof(b) == Array(Animal)}"
+puts "#{Cat | Dog} == #{Animal}?  #{Cat | Dog == Animal}"
+puts "#{Array(Cat | Dog)} == #{Array(Animal)}?  #{Array(Cat | Dog) == Array(Animal)}"
