@@ -24,3 +24,6 @@ puts
 b = [Cat.new, Dog.new]
 puts "#{typeof(b)} #{b.class}"
 b.each &.talk
+puts
+
+puts Cat | Dog
