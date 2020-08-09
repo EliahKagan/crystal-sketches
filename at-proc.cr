@@ -1,6 +1,5 @@
 class Factory(T)
-  def initialize(&block : -> T)
-    @producer = block
+  def initialize(&@producer : -> T)
   end
 
   def call
