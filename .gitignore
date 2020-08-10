@@ -12,6 +12,7 @@
 # Ignore editor tempfiles.
 .*.swp
 
-# Ignore compile Python bytecode.
-# (This repo has some code in other languages, for comparison to Crystal.)
+# Ignore compiled binares associated with some other languages. Some such code
+# exists in this repository for comparison to Crystal and for testing.
+*.exe
 __pycache__/
