@@ -15,4 +15,5 @@ end
 
 # With a procoid:
 tc2 = TitleCaser.new
-pp words.map(&tc2) # Compile error. & syntax doesn't support this.
+#pp words.map(&tc2) # Compile error. & syntax doesn't support this.
+pp words.map { |word| tc2.call(word) }
