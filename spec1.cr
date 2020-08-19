@@ -7,7 +7,6 @@ describe Array do
       a[-1].should eq "Cassidy"
       a[-2].should eq "Bob"
       a[-3].should eq "Alice"
-      a[-4].should eq "This test will fail."
     end
   end
 end
