@@ -1,6 +1,6 @@
 module Iterator(T)
-  def take_until(&block)
-    take_while { |item| !yield(item) }
+  def take_until(&block : T -> B) forall B
+    take_while { |item| !block.call(item) }
   end
 end
 
