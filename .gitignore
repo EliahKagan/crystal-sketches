@@ -4,6 +4,7 @@
 !*.*
 
 # Exceptions, not ignored even though they have no ".".
+!/LICENSE
 !/bow-test
 !/heredoc
 !/primes
